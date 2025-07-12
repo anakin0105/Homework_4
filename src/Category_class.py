@@ -1,17 +1,17 @@
 
 class Category:
-    name: str
-    description: str
-    products: list
-    category_number = 0
-    product_amount = 0
+    name: str #атрибут: название
+    description: str #атрибут: описание
+    products: list #атрибут: лист продуктов
+    category_count = 0
+    product_count = 0
 
     def __init__(self, name, description, products):
         self.name = name
         self.description = description
         self.products = products
-        Category.category_number += 1
-        Category.product_amount += len(products)
+        Category.category_count += 1
+        Category.product_count += len(products)
 
 # # Примеры использования
 # # 1. Создаём несколько категорий
