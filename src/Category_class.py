@@ -1,10 +1,10 @@
-
 class Category:
-    """ Класс Category с атрибутом: название, описание,
+    """Класс Category с атрибутом: название, описание,
     лист продуктов, количество категорий, количество товаров"""
-    name: str #атрибут: название
-    description: str #атрибут: описание
-    products: list #атрибут: лист продуктов
+
+    name: str  # атрибут: название
+    description: str  # атрибут: описание
+    products: list  # атрибут: лист продуктов
     category_count = 0
     product_count = 0
 
@@ -15,6 +15,7 @@ class Category:
         self.products = products
         Category.category_count += 1
         Category.product_count += len(products)
+
 
 # # Примеры использования
 # # 1. Создаём несколько категорий

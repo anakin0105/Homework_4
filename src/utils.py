@@ -5,6 +5,7 @@ import os
 PATH_TO_FILE = os.path.join(os.path.dirname(__file__), "..", "data", "products.json")
 # Задан путь к файлу с транзакциями в формате JSON
 
+
 def read_json_file(path: str) -> list:
     """Функция, которая возвращает список словарей
     с данными о продуктах и категориях из JSON-файла"""
@@ -27,4 +28,3 @@ def read_json_file(path: str) -> list:
             print("\nТип объекта в файле не список")
             return []
         return transactions_list
-

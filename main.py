@@ -1,8 +1,9 @@
-
-from src.utils import read_json_file, PATH_TO_FILE  # Импортируем функцию read_json_file из utils
+from src.utils import (
+    read_json_file,
+    PATH_TO_FILE,
+)  # Импортируем функцию read_json_file из utils
 from src.Category_class import Category  # Импортируем класс Category
 from src.Product_class import Product
-
 
 
 def main() -> list:
@@ -17,8 +18,6 @@ def main() -> list:
     print(f"Данные из JSON: {data}")
     print(read_json_file(PATH_TO_FILE))
 
-
-
     categories_main = []
     for category_data in data:
         try:
@@ -26,9 +25,9 @@ def main() -> list:
             products = [
                 Product(
                     name=prod["name"],
-                    description= ["description"],
+                    description=["description"],
                     price=prod["price"],
-                    quantity=prod["quantity"]
+                    quantity=prod["quantity"],
                 )
                 for prod in category_data["products"]
             ]
@@ -36,7 +35,7 @@ def main() -> list:
             category_main = Category(
                 name=category_data["name"],
                 description=category_data["description"],
-                products=products
+                products=products,
             )
             categories_main.append(category_main)
         except KeyError as e:
@@ -53,5 +52,7 @@ if __name__ == "__main__":
         print(f"Категория: {category.name}, Описание: {category.description}")
         print("Товары:")
         for product in category.products:
-            print(f"  - {product.name}: Цена = {product.price}, Количество = {product.quantity}")
+            print(
+                f"  - {product.name}: Цена = {product.price}, Количество = {product.quantity}"
+            )
         print()
