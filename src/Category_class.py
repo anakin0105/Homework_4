@@ -1,6 +1,6 @@
 class Category:
     """Класс Category с атрибутом: название, описание,
-    лист продуктов, количество категорий, количество товаров"""
+    лист продуктов, количество категорий, количество товаров."""
 
     name: str  # атрибут: название
     description: str  # атрибут: описание
@@ -9,7 +9,7 @@ class Category:
     product_count = 0
 
     def __init__(self, name, description, products):
-        """Метод __init__ для Класса Category"""
+        """Метод __init__ для Класса Category."""
         self.name = name
         self.description = description
         self.products = products
