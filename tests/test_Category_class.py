@@ -1,48 +1,119 @@
+from unittest.mock import patch
+
 import pytest
 
 from src.Category_class import Category
+from src.Product_class import Product
 
 
-# Фикстура для создания категории
+# Фикстуры для создания тестовых данных
+
+
 @pytest.fixture
-def category():
-    """Создаёт тестовую категорию и сбрасывает счётчики после теста."""
-    # Сбрасываем счётчики перед каждым тестом
-    Category.category_count = 0
-    Category.product_count = 0
-    # Создаём категорию
-    products = ["Product1", "Product2"]
-    return Category("Electronics", "Category for electronic items", products)
+def product_phone():
+    """Фикстура для создания продукта Phone"""
+    return Product(name="Phone", description="Smartphone", price=50000.0, quantity=10)
 
 
-# Фикстура для создания пустой категории
+@pytest.fixture
+def product_laptop():
+    """Фикстура для создания продукта Laptop"""
+    return Product(
+        name="Laptop", description="Portable computer", price=80000.0, quantity=5
+    )
+
+
+@pytest.fixture
+def product_phone_duplicate_higher_price():
+    """Фикстура для создания дубликата Phone с более высокой ценой"""
+    return Product(
+        name="Phone", description="Updated smartphone", price=60000.0, quantity=3
+    )
+
+
+@pytest.fixture
+def product_phone_duplicate_lower_price():
+    """Фикстура для создания дубликата Phone с более низкой ценой"""
+    return Product(
+        name="Phone", description="Budget smartphone", price=40000.0, quantity=7
+    )
+
+
+@pytest.fixture
+def category_electronics(product_phone, product_laptop):
+    """Фикстура для создания категории Electronics с двумя продуктами"""
+    return Category(
+        name="Electronics",
+        description="Devices and gadgets",
+        products=[product_phone, product_laptop],
+    )
+
+
 @pytest.fixture
 def empty_category():
-    """Создаёт категорию с пустым списком продуктов."""
-    Category.category_count = 0
-    Category.product_count = 0
-    return Category("Books", "Category for books", [])
+    """Фикстура для создания пустой категории"""
+    return Category(name="Empty", description="No products", products=[])
 
 
-# Тест инициализации категории
-def test_category_initialization(category):
-    """Проверяет корректность инициализации атрибутов категории."""
-    assert category.name == "Electronics"
-    assert category.description == "Category for electronic items"
-    assert category.products == ["Product1", "Product2"]
-
-# Тест счётчика продуктов
-def test_product_count(category):
-    """Проверяет корректность подсчёта продуктов."""
-    assert Category.product_count == 2
+# Тесты для класса Product
+def test_product_init(product_phone):
+    """Тест инициализации продукта"""
+    assert product_phone.name == "Phone"
+    assert product_phone.description == "Smartphone"
+    assert product_phone.price == 50000.0
+    assert product_phone.quantity == 10
 
 
-# Тест пустой категории
-def test_empty_category(empty_category):
-    """Проверяет категорию с пустым списком продуктов."""
-    assert empty_category.name == "Books"
-    assert empty_category.description == "Category for books"
-    assert empty_category.products == []
-    assert Category.product_count == 0
-    assert Category.category_count == 1
+def test_product_new_product():
+    """Тест класс-метода new_product"""
+    product_info = {
+        "name": "Tablet",
+        "description": "Touchscreen device",
+        "price": 30000.0,
+        "quantity": 8,
+    }
+    product = Product.new_product(product_info)
+    assert product.name == "Tablet"
+    assert product.description == "Touchscreen device"
+    assert product.price == 30000.0
+    assert product.quantity == 8
 
+
+def test_product_price_getter(product_phone):
+    """Тест геттера цены"""
+    assert product_phone.price == 50000.0
+
+
+def test_product_price_setter_increase(product_phone):
+    """Тест сеттера цены при повышении"""
+    product_phone.price = 60000.0
+    assert product_phone.price == 60000.0
+
+
+@patch("builtins.input", return_value="y")
+def test_product_price_setter_decrease_confirm(mock_input, product_phone):
+    """Тест сеттера цены при понижении с подтверждением"""
+    product_phone.price = 40000.0
+    assert product_phone.price == 40000.0
+
+
+@patch("builtins.input", return_value="n")
+def test_product_price_setter_decrease_cancel(mock_input, product_phone):
+    """Тест сеттера цены при понижении с отказом"""
+    product_phone.price = 40000.0
+    assert product_phone.price == 50000.0
+
+
+def test_product_price_setter_invalid(product_phone, capsys):
+    """Тест сеттера цены при невалидной цене"""
+    product_phone.price = 0
+    captured = capsys.readouterr()
+    assert "Цена не должна быть нулевая или отрицательная" in captured.out
+    assert product_phone.price == 50000.0
+
+
+def test_product_price_private_access(product_phone):
+    """Тест приватности атрибута __price"""
+    with pytest.raises(AttributeError):
+        product_phone.__price
+    assert product_phone._Product__price == 50000.0  # Проверка через манглинг
