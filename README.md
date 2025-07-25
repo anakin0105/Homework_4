@@ -89,6 +89,7 @@
    - Покрытие тестами >75%, проверено с помощью pytest-cov.
 ## Установка и запуск тестов
 Установка зависимостей:
-   `bash
+```bash
    pip install pytest pytest-cov
 pytest tests --cov=src --cov-report=html -v
+```
