@@ -83,7 +83,7 @@ def test_product_price_setter_invalid(product_phone, capsys):
     """Тест сеттера цены при невалидной цене"""
     product_phone.price = 0
     captured = capsys.readouterr()
-    assert "Цена не должна быть нулевая или отрицательная" in captured.out
+    assert "Цена не должна быть нулевая или отрицательная!" in captured.out
     assert product_phone.price == 50000.0
 
 def test_product_price_private_access(product_phone):

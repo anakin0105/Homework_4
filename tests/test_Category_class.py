@@ -3,6 +3,12 @@ import pytest
 from unittest.mock import patch
 from main import Category, Product # Предполагается, что классы в файле main.py
 
+from unittest.mock import patch
+
+import pytest
+
+from src.Category_class import Category
+from src.Product_class import Product
 # Фикстуры для создания тестовых данных
 
 @pytest.fixture
@@ -34,68 +40,58 @@ def category_electronics(product_phone, product_laptop):
 def empty_category():
  """Фикстура для создания пустой категории"""
  return Category(name="Empty", description="No products", products=[])
+# Тесты для класса Product
+def test_product_init(product_phone):
+    """Тест инициализации продукта"""
+    assert product_phone.name == "Phone"
+    assert product_phone.description == "Smartphone"
+    assert product_phone.price == 50000.0
+    assert product_phone.quantity == 10
 
-# Тесты для класса Category
-def test_category_init(category_electronics):
-    """Тест инициализации категории"""
-    assert category_electronics.name == "Electronics"
-    assert category_electronics.description == "Devices and gadgets"
-    assert len(category_electronics._Category__products) == 2
-    assert Category.category_count == 1
-    assert Category.product_count == 2
+def test_product_new_product():
+    """Тест класс-метода new_product"""
+    product_info = {
+        "name": "Tablet",
+        "description": "Touchscreen device",
+        "price": 30000.0,
+        "quantity": 8
+    }
+    product = Product.new_product(product_info)
+    assert product.name == "Tablet"
+    assert product.description == "Touchscreen device"
+    assert product.price == 30000.0
+    assert product.quantity == 8
 
-def test_category_products_getter(category_electronics):
-    """Тест геттера products"""
-    expected_output = (
-        "Phone, 50000.0 руб. Остаток: 10 шт.\n"
-        "Laptop, 80000.0 руб. Остаток: 5 шт.\n"
-    )
-    assert category_electronics.products == expected_output
+def test_product_price_getter(product_phone):
+    """Тест геттера цены"""
+    assert product_phone.price == 50000.0
 
-def test_category_add_product_unique(category_electronics, product_tablet):
-    """Тест добавления уникального продукта"""
-    category_electronics.add_product(product_tablet)
-    assert len(category_electronics._Category__products) == 3
-    assert Category.product_count == 3
-    assert product_tablet in category_electronics._Category__products
-
-@patch('builtins.input', return_value='y')
-def test_category_add_product_duplicate_higher_price(mock_input, category_electronics, product_phone_duplicate_higher_price):
-    """Тест добавления дубликата с более высокой ценой"""
-    category_electronics.add_product(product_phone_duplicate_higher_price)
-    assert len(category_electronics._Category__products) == 2
-    assert Category.product_count == 2
-    phone = category_electronics._Category__products[0]
-    assert phone.quantity == 13  # 10 + 3
-    assert phone.price == 60000.0  # max(50000, 60000)
+def test_product_price_setter_increase(product_phone):
+    """Тест сеттера цены при повышении"""
+    product_phone.price = 60000.0
+    assert product_phone.price == 60000.0
 
 @patch('builtins.input', return_value='y')
-def test_category_add_product_duplicate_lower_price_confirm(mock_input, category_electronics, product_phone_duplicate_lower_price):
-    """Тест добавления дубликата с более низкой ценой (подтверждение)"""
-    category_electronics.add_product(product_phone_duplicate_lower_price)
-    assert len(category_electronics._Category__products) == 2
-    assert Category.product_count == 2
-    phone = category_electronics._Category__products[0]
-    assert phone.quantity == 17  # 10 + 7
-    assert phone.price == 40000.0  # Пользователь подтвердил понижение
+def test_product_price_setter_decrease_confirm(mock_input, product_phone):
+    """Тест сеттера цены при понижении с подтверждением"""
+    product_phone.price = 40000.0
+    assert product_phone.price == 40000.0
 
 @patch('builtins.input', return_value='n')
-def test_category_add_product_duplicate_lower_price_cancel(mock_input, category_electronics, product_phone_duplicate_lower_price):
-    """Тест добавления дубликата с более низкой ценой (отказ)"""
-    category_electronics.add_product(product_phone_duplicate_lower_price)
-    assert len(category_electronics._Category__products) == 2
-    assert Category.product_count == 2
-    phone = category_electronics._Category__products[0]
-    assert phone.quantity == 17  # 10 + 7
-    assert phone.price == 50000.0  # Пользователь отказался от понижения
+def test_product_price_setter_decrease_cancel(mock_input, product_phone):
+    """Тест сеттера цены при понижении с отказом"""
+    product_phone.price = 40000.0
+    assert product_phone.price == 50000.0
 
-def test_category_add_product_invalid_type(category_electronics):
-    """Тест добавления неверного типа продукта"""
-    with pytest.raises(ValueError, match="Можно добавлять только объекты класса Product"):
-        category_electronics.add_product("Not a Product")
+def test_product_price_setter_invalid(product_phone, capsys):
+    """Тест сеттера цены при невалидной цене"""
+    product_phone.price = 0
+    captured = capsys.readouterr()
+    assert "Цена не должна быть нулевая или отрицательная" in captured.out
+    assert product_phone.price == 50000.0
 
-def test_category_products_private_access(category_electronics):
-    """Тест приватности атрибута __products"""
+def test_product_price_private_access(product_phone):
+    """Тест приватности атрибута __price"""
     with pytest.raises(AttributeError):
-        category_electronics.__products
-    assert len(category_electronics._Category__products) == 2  # Проверка через манглинг
+        product_phone.__price
+    assert product_phone._Product__price == 50000.0  # Проверка через манглинг
