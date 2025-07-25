@@ -13,14 +13,13 @@ class Product:  #
         self.__price = price
         self.quantity = quantity
 
-
     @classmethod
-    def new_product(cls,product_info):
+    def new_product(cls, product_info):
         return cls(
-            name = product_info["name"],
-            description = product_info["description"],
-            price = product_info["price"],
-            quantity = product_info["quantity"],
+            name=product_info["name"],
+            description=product_info["description"],
+            price=product_info["price"],
+            quantity=product_info["quantity"],
         )
 
     @property
@@ -33,11 +32,13 @@ class Product:  #
             print("Цена не должна быть нулевая или отрицательная!")
             return
         if new_price < self.__price:
-                confirmation = input("Вы уверены, что хотите понизить цену? (y/n): ")
-                if confirmation != 'y':
-                    print("Понижение цены отменено.")
-                    return
+            confirmation = input("Вы уверены, что хотите понизить цену? (y/n): ")
+            if confirmation != "y":
+                print("Понижение цены отменено.")
+                return
         self.__price = new_price
+
+
 # # Примеры использования класса Product
 #
 # # 1. Создание продукта через init
