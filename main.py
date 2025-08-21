@@ -1,7 +1,9 @@
 from src.Category_class import Category  # Импортируем класс Category
 from src.Product_class import Product
 from src.utils import (  # Импортируем функцию read_json_file из utils
-    PATH_TO_FILE, read_json_file)
+    PATH_TO_FILE,
+    read_json_file,
+)
 
 
 def main() -> list:

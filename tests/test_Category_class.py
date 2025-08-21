@@ -117,3 +117,4 @@ def test_product_price_private_access(product_phone):
     with pytest.raises(AttributeError):
         product_phone.__price
     assert product_phone._Product__price == 50000.0  # Проверка через манглинг
+

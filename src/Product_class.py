@@ -38,6 +38,13 @@ class Product:  #
                 return
         self.__price = new_price
 
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        if not isinstance(other, Product):
+            raise TypeError("Operand must be Product")
+
 
 # # Примеры использования класса Product
 #
