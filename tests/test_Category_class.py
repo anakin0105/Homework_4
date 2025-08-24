@@ -7,6 +7,25 @@ from src.Product_class import Product
 
 
 # Фикстуры для создания тестовых данных
+# Фикстура для создания категории
+@pytest.fixture
+def category():
+    """Создаёт тестовую категорию и сбрасывает счётчики после теста."""
+    # Сбрасываем счётчики перед каждым тестом
+    Category.category_count = 0
+    Category.product_count = 0
+    # Создаём категорию
+    products = ["Product1", "Product2"]
+    return Category("Electronics", "Category for electronic items", products)
+
+
+# Фикстура для создания пустой категории
+@pytest.fixture
+def empty_category():
+    """Создаёт категорию с пустым списком продуктов."""
+    Category.category_count = 0
+    Category.product_count = 0
+    return Category("Books", "Category for books", [])
 
 
 @pytest.fixture
@@ -55,66 +74,30 @@ def empty_category():
     return Category(name="Empty", description="No products", products=[])
 
 
-# Тесты для класса Product
-def test_product_init(product_phone):
-    """Тест инициализации продукта"""
-    assert product_phone.name == "Phone"
-    assert product_phone.description == "Smartphone"
-    assert product_phone.price == 50000.0
-    assert product_phone.quantity == 10
+def test_category(empty_category):
+    assert str(empty_category) == 'Empty, количество продуктов: 0 шт.'
 
-
-def test_product_new_product():
-    """Тест класс-метода new_product"""
-    product_info = {
-        "name": "Tablet",
-        "description": "Touchscreen device",
-        "price": 30000.0,
-        "quantity": 8,
-    }
-    product = Product.new_product(product_info)
-    assert product.name == "Tablet"
-    assert product.description == "Touchscreen device"
-    assert product.price == 30000.0
-    assert product.quantity == 8
-
-
-def test_product_price_getter(product_phone):
-    """Тест геттера цены"""
-    assert product_phone.price == 50000.0
-
-
-def test_product_price_setter_increase(product_phone):
-    """Тест сеттера цены при повышении"""
-    product_phone.price = 60000.0
-    assert product_phone.price == 60000.0
-
-
-@patch("builtins.input", return_value="y")
-def test_product_price_setter_decrease_confirm(mock_input, product_phone):
-    """Тест сеттера цены при понижении с подтверждением"""
-    product_phone.price = 40000.0
-    assert product_phone.price == 40000.0
-
-
-@patch("builtins.input", return_value="n")
-def test_product_price_setter_decrease_cancel(mock_input, product_phone):
-    """Тест сеттера цены при понижении с отказом"""
-    product_phone.price = 40000.0
-    assert product_phone.price == 50000.0
-
-
-def test_product_price_setter_invalid(product_phone, capsys):
-    """Тест сеттера цены при невалидной цене"""
-    product_phone.price = 0
-    captured = capsys.readouterr()
-    assert "Цена не должна быть нулевая или отрицательная" in captured.out
-    assert product_phone.price == 50000.0
-
-
-def test_product_price_private_access(product_phone):
-    """Тест приватности атрибута __price"""
-    with pytest.raises(AttributeError):
-        product_phone.__price
-    assert product_phone._Product__price == 50000.0  # Проверка через манглинг
-
+#
+# # Тест инициализации категории
+# def test_category_initialization(category_electronics, product_phone, product_laptop):
+#     """Проверяет корректность инициализации атрибутов категории."""
+#     assert category_electronics == "Electronics"
+#     assert category_electronics.description == "Category for electronic items"
+#     assert category_electronics.products == [product_phone, product_laptop]
+#
+# # Тест счётчика продуктов
+# def test_product_count(category):
+#     """Проверяет корректность подсчёта продуктов."""
+#     assert Category.product_count == 2
+#
+#
+# # Тест пустой категории
+# def test_empty_category(empty_category):
+#     """Проверяет категорию с пустым списком продуктов."""
+#     assert empty_category.name == "Books"
+#     assert empty_category.description == "Category for books"
+#     assert empty_category.products == []
+#     assert Category.product_count == 0
+#     assert Category.category_count == 1
+# def test_category(empty_category):
+#     pass

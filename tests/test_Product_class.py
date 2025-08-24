@@ -57,10 +57,15 @@ def empty_category():
 # Тесты для класса Product
 def test_product_init(product_phone):
     """Тест инициализации продукта"""
+    assert str(product_phone) == 'Phone, 50000.0 руб. Остаток: 10 шт.'
     assert product_phone.name == "Phone"
     assert product_phone.description == "Smartphone"
     assert product_phone.price == 50000.0
     assert product_phone.quantity == 10
+
+def test_product_type(product_phone, empty_category):
+    with pytest.raises(TypeError):
+        product_phone + empty_category
 
 
 def test_product_new_product():
@@ -116,3 +121,6 @@ def test_product_price_private_access(product_phone):
     with pytest.raises(AttributeError):
         product_phone.__price
     assert product_phone._Product__price == 50000.0  # Проверка через манглинг
+
+def test_category(empty_category):
+    assert str (empty_category) == 'Empty, количество продуктов: 0 шт.'

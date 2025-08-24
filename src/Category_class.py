@@ -27,7 +27,7 @@ class Category:
 
     @property
     def products(self):
-        product_str = " "
+        product_str = ""
         for product in self.__products:
             product_str += f"Название продукта {product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
         return product_str
@@ -43,7 +43,7 @@ class Category:
             raise ValueError("Можно добавлять только объекты класса Product")
 
         for existing_product in self.__products:
-            if existing_product == product.name:
+            if existing_product.name == product.name:
                 existing_product.quantity += product.quantity
                 # Выбираем более высокую цену
                 new_price = max(existing_product.price, product.price)
@@ -58,7 +58,7 @@ class Category:
 
 class CategoryIterator:
     def __init__(self, category):
-        self.products = category.products
+        self.products = category.get_products()
         self.index = 0
 
     def __iter__(self):
