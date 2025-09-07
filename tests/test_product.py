@@ -2,8 +2,9 @@ from unittest.mock import patch
 
 import pytest
 
-from src.Category_class import Category
-from src.Product_class import Product
+from src.сategory import Category
+from src.product import Product
+
 
 # Фикстуры для создания тестовых данных
 
@@ -62,6 +63,7 @@ def test_product_init(product_phone):
     assert product_phone.description == "Smartphone"
     assert product_phone.price == 50000.0
     assert product_phone.quantity == 10
+
 
 def test_product_type(product_phone, empty_category):
     with pytest.raises(TypeError):
@@ -122,5 +124,32 @@ def test_product_price_private_access(product_phone):
         product_phone.__price
     assert product_phone._Product__price == 50000.0  # Проверка через манглинг
 
+
 def test_category(empty_category):
-    assert str (empty_category) == 'Empty, количество продуктов: 0 шт.'
+    assert str(empty_category) == 'Empty, количество продуктов: 0 шт.'
+
+
+def test_add():
+    """Тест сложения двух товаров"""
+    product1 = {
+        'name': 'Телефон',
+        'description': 'Смартфон',
+        'price': 10000.0,
+        'quantity': 2
+    }
+    product2 = {
+        'name': 'Ноутбук',
+        'description': 'Игровой ноутбук',
+        'price': 50000.0,
+        'quantity': 1
+    }
+
+    # Ожидаемый результат: (10000 * 2) + (50000 * 1) = 20000 + 50000 = 70000
+    expected = 70000.0
+
+    # Создаем объекты и тестируем сложение
+    prod1 = Product.new_product(product1)
+    prod2 = Product.new_product(product2)
+    result = prod1 + prod2
+
+    assert result == expected
