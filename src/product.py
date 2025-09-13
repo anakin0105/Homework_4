@@ -6,12 +6,12 @@ class Product:  #
     price: float  # атрибут: цена
     quantity: int  # атрибут: количество
 
-    def __init__(self, name, description, price, quantity):
-        """Метод __init__ для Класса Product"""
+    def __init__(self, name: str, description: str, quantity: int, price: float):
         self.name = name
         self.description = description
-        self.__price = price
         self.quantity = quantity
+        self.__price = price
+
 
     @classmethod
     def new_product(cls, product_info):
@@ -37,6 +37,15 @@ class Product:  #
                 print("Понижение цены отменено.")
                 return
         self.__price = new_price
+
+    def __str__(self):
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        if not isinstance(other, Product):
+            raise TypeError("Тип данных должен быть Product")
+        return self.__price * self.quantity + other.price * other.quantity
+
 
 
 # # Примеры использования класса Product

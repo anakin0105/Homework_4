@@ -2,8 +2,8 @@ from unittest.mock import patch
 
 import pytest
 
-from src.Category_class import Category
-from src.Product_class import Product
+from src.сategory import Category
+from src.product import Product
 
 
 # Фикстуры для создания тестовых данных
@@ -58,10 +58,16 @@ def empty_category():
 # Тесты для класса Product
 def test_product_init(product_phone):
     """Тест инициализации продукта"""
+    assert str(product_phone) == 'Phone, 50000.0 руб. Остаток: 10 шт.'
     assert product_phone.name == "Phone"
     assert product_phone.description == "Smartphone"
     assert product_phone.price == 50000.0
     assert product_phone.quantity == 10
+
+
+def test_product_type(product_phone, empty_category):
+    with pytest.raises(TypeError):
+        product_phone + empty_category
 
 
 def test_product_new_product():
@@ -108,7 +114,7 @@ def test_product_price_setter_invalid(product_phone, capsys):
     """Тест сеттера цены при невалидной цене"""
     product_phone.price = 0
     captured = capsys.readouterr()
-    assert "Цена не должна быть нулевая или отрицательная" in captured.out
+    assert "Цена не должна быть нулевая или отрицательная!" in captured.out
     assert product_phone.price == 50000.0
 
 
@@ -117,3 +123,33 @@ def test_product_price_private_access(product_phone):
     with pytest.raises(AttributeError):
         product_phone.__price
     assert product_phone._Product__price == 50000.0  # Проверка через манглинг
+
+
+def test_category(empty_category):
+    assert str(empty_category) == 'Empty, количество продуктов: 0 шт.'
+
+
+def test_add():
+    """Тест сложения двух товаров"""
+    product1 = {
+        'name': 'Телефон',
+        'description': 'Смартфон',
+        'price': 10000.0,
+        'quantity': 2
+    }
+    product2 = {
+        'name': 'Ноутбук',
+        'description': 'Игровой ноутбук',
+        'price': 50000.0,
+        'quantity': 1
+    }
+
+    # Ожидаемый результат: (10000 * 2) + (50000 * 1) = 20000 + 50000 = 70000
+    expected = 70000.0
+
+    # Создаем объекты и тестируем сложение
+    prod1 = Product.new_product(product1)
+    prod2 = Product.new_product(product2)
+    result = prod1 + prod2
+
+    assert result == expected
