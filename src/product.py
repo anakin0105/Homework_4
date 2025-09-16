@@ -12,7 +12,6 @@ class Product:  #
         self.quantity = quantity
         self.__price = price
 
-
     @classmethod
     def new_product(cls, product_info):
         return cls(
@@ -50,8 +49,17 @@ class Product:  #
 class Smartphone(Product):
     """Класс Smartphone, наследник Product, с дополнительными атрибутами: производительность, модель, объем памяти, цвет"""
 
-    def __init__(self, name: str, description: str, quantity: int, price: float,
-                 efficiency: float, model: str, memory: int, color: str):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        quantity: int,
+        price: float,
+        efficiency: float,
+        model: str,
+        memory: int,
+        color: str,
+    ):
         super().__init__(name, description, quantity, price)
         self.efficiency = efficiency
         self.model = model
@@ -72,8 +80,10 @@ class Smartphone(Product):
         )
 
     def __str__(self):
-        return (f"{self.name} ({self.model}, {self.color}), {self.price} руб. "
-                f"Остаток: {self.quantity} шт., Память: {self.memory} ГБ, Производительность: {self.efficiency}")
+        return (
+            f"{self.name} ({self.model}, {self.color}), {self.price} руб. "
+            f"Остаток: {self.quantity} шт., Память: {self.memory} ГБ, Производительность: {self.efficiency}"
+        )
 
     def __add__(self, other):
         if not isinstance(other, Smartphone):
@@ -84,8 +94,16 @@ class Smartphone(Product):
 class LawnGrass(Product):
     """Класс LawnGrass, наследник Product, с дополнительными атрибутами: страна-производитель, срок прорастания, цвет"""
 
-    def __init__(self, name: str, description: str, quantity: int, price: float,
-                 country: str, germination_period: str, color: str):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        quantity: int,
+        price: float,
+        country: str,
+        germination_period: str,
+        color: str,
+    ):
         super().__init__(name, description, quantity, price)
         self.country = country
         self.germination_period = germination_period
@@ -104,14 +122,77 @@ class LawnGrass(Product):
         )
 
     def __str__(self):
-        return (f"{self.name} ({self.country}, {self.color}), {self.price} руб. "
-                f"Остаток: {self.quantity} шт., Срок прорастания: {self.germination_period}")
-
+        return (
+            f"{self.name} ({self.country}, {self.color}), {self.price} руб. "
+            f"Остаток: {self.quantity} шт., Срок прорастания: {self.germination_period}"
+        )
 
     def __add__(self, other):
         if not isinstance(other, LawnGrass):
             raise TypeError("Можно складывать только объекты класса LawnGrass")
         return self.price * self.quantity + other.price * other.quantity
+
+
+# # Пример использования:
+# if __name__ == "__main__":
+#     smartphone = Smartphone(
+#         name="iPhone 14",
+#         description="Смартфон Apple",
+#         quantity=10,
+#         price=79990.0,
+#         efficiency=3.5,
+#         model="A2882",
+#         memory=128,
+#         color="Midnight Black"
+#     )
+#     smartphone2 = Smartphone(
+#         name="Samsung S23",
+#         description="Смартфон Samsung",
+#         quantity=5,
+#         price=65000.0,
+#         efficiency=3.2,
+#         model="S23",
+#         memory=256,
+#         color="Silver"
+#     )
+#     lawn_grass = LawnGrass(
+#         name="Green Lawn",
+#         description="Газонная трава для сада",
+#         quantity=50,
+#         price=1500.0,
+#         country="Germany",
+#         germination_period="7-14 дней",
+#         color="Green"
+#     )
+#     product = Product(
+#         name="Generic Product",
+#         description="Обычный продукт",
+#         quantity=5,
+#         price=1000.0
+#     )
+#
+#     # Успешное сложение
+#     total_smartphones = smartphone + smartphone2
+#     print(f"Общая стоимость смартфонов: {total_smartphones} руб.")  # Работает
+#
+#     # Ошибка при сложении Smartphone с LawnGrass
+#     try:
+#         smartphone + lawn_grass
+#     except TypeError as e:
+#         print(f"Ошибка: {e}")
+#
+#     # Ошибка при сложении Smartphone с Product
+#     try:
+#         smartphone + product
+#     except TypeError as e:
+#         print(f"Ошибка: {e}")
+#
+#     # Ошибка при сложении Smartphone с некорректным типом
+#     try:
+#         smartphone + "not a product"
+#     except TypeError as e:
+#         print(f"Ошибка: {e}")
+
 
 # # Пример использования:
 # if __name__ == "__main__":

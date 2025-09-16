@@ -1,9 +1,7 @@
-from src.сategory import Category  # Импортируем класс Category
 from src.product import Product
 from src.utils import (  # Импортируем функцию read_json_file из utils
-    PATH_TO_FILE,
-    read_json_file,
-)
+    PATH_TO_FILE, read_json_file)
+from src.сategory import Category  # Импортируем класс Category
 
 
 def main() -> list:
@@ -82,7 +80,9 @@ if __name__ == "__main__":
     print("Начальное состояние категории:")  # Показываем начальное состояние
     print(f"Категория: {category.name}, Описание: {category.description}")
     print("Продукты:")
-    print(category.products)  # Ожидается: Phone (50000.0, 10 шт.), Laptop (80000.0, 5 шт.)
+    print(
+        category.products
+    )  # Ожидается: Phone (50000.0, 10 шт.), Laptop (80000.0, 5 шт.)
     print(f"Всего категорий: {Category.category_count}")  # Ожидается: 1
     print(f"Всего продуктов: {Category.product_count}")  # Ожидается: 2
 

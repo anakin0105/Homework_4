@@ -1,7 +1,9 @@
 from unittest.mock import patch
-from src.сategory import Category
+
 import pytest
-from src.product import Product, Smartphone, LawnGrass
+
+from src.product import LawnGrass, Product, Smartphone
+from src.сategory import Category
 
 # Фикстуры для создания тестовых данных
 
@@ -55,7 +57,7 @@ def empty_category():
 # Тесты для класса Product
 def test_product_init(product_phone):
     """Тест инициализации продукта"""
-    assert str(product_phone) == 'Phone, 50000.0 руб. Остаток: 10 шт.'
+    assert str(product_phone) == "Phone, 50000.0 руб. Остаток: 10 шт."
     assert product_phone.name == "Phone"
     assert product_phone.description == "Smartphone"
     assert product_phone.price == 50000.0
@@ -123,22 +125,22 @@ def test_product_price_private_access(product_phone):
 
 
 def test_category(empty_category):
-    assert str(empty_category) == 'Empty, количество продуктов: 0 шт.'
+    assert str(empty_category) == "Empty, количество продуктов: 0 шт."
 
 
 def test_add():
     """Тест сложения двух товаров"""
     product1 = {
-        'name': 'Телефон',
-        'description': 'Смартфон',
-        'price': 10000.0,
-        'quantity': 2
+        "name": "Телефон",
+        "description": "Смартфон",
+        "price": 10000.0,
+        "quantity": 2,
     }
     product2 = {
-        'name': 'Ноутбук',
-        'description': 'Игровой ноутбук',
-        'price': 50000.0,
-        'quantity': 1
+        "name": "Ноутбук",
+        "description": "Игровой ноутбук",
+        "price": 50000.0,
+        "quantity": 1,
     }
 
     # Ожидаемый результат: (10000 * 2) + (50000 * 1) = 20000 + 50000 = 70000
@@ -163,7 +165,7 @@ def smartphone_info():
         "efficiency": 3.5,
         "model": "A2882",
         "memory": 128,
-        "color": "Midnight Black"
+        "color": "Midnight Black",
     }
 
 
@@ -177,7 +179,7 @@ def smartphone(smartphone_info):
         efficiency=smartphone_info["efficiency"],
         model=smartphone_info["model"],
         memory=smartphone_info["memory"],
-        color=smartphone_info["color"]
+        color=smartphone_info["color"],
     )
 
 
@@ -191,7 +193,7 @@ def smartphone2():
         efficiency=3.2,
         model="S23",
         memory=256,
-        color="Silver"
+        color="Silver",
     )
 
 
@@ -204,7 +206,7 @@ def lawn_grass_info():
         "quantity": 50,
         "country": "Germany",
         "germination_period": "7-14 дней",
-        "color": "Green"
+        "color": "Green",
     }
 
 
@@ -217,7 +219,7 @@ def lawn_grass(lawn_grass_info):
         price=lawn_grass_info["price"],
         country=lawn_grass_info["country"],
         germination_period=lawn_grass_info["germination_period"],
-        color=lawn_grass_info["color"]
+        color=lawn_grass_info["color"],
     )
 
 
@@ -230,17 +232,14 @@ def lawn_grass2():
         price=1200.0,
         country="Netherlands",
         germination_period="5-10 дней",
-        color="Dark Green"
+        color="Dark Green",
     )
 
 
 @pytest.fixture
 def product():
     return Product(
-        name="Generic Product",
-        description="Обычный продукт",
-        quantity=5,
-        price=1000.0
+        name="Generic Product", description="Обычный продукт", quantity=5, price=1000.0
     )
 
 
@@ -272,8 +271,10 @@ def test_smartphone_new_product(smartphone_info):
 
 def test_smartphone_str(smartphone):
     """Проверка метода __str__ для Smartphone"""
-    expected = (f"{smartphone.name} ({smartphone.model}, {smartphone.color}), {smartphone.price} руб. "
-                f"Остаток: {smartphone.quantity} шт., Память: {smartphone.memory} ГБ, Производительность: {smartphone.efficiency}")
+    expected = (
+        f"{smartphone.name} ({smartphone.model}, {smartphone.color}), {smartphone.price} руб. "
+        f"Остаток: {smartphone.quantity} шт., Память: {smartphone.memory} ГБ, Производительность: {smartphone.efficiency}"
+    )
     assert str(smartphone) == expected
 
 
@@ -285,19 +286,25 @@ def test_smartphone_add_same_class(smartphone, smartphone2):
 
 def test_smartphone_add_lawn_grass(smartphone, lawn_grass):
     """Проверка ошибки при сложении Smartphone с LawnGrass"""
-    with pytest.raises(TypeError, match="Можно складывать только объекты класса Smartphone"):
+    with pytest.raises(
+        TypeError, match="Можно складывать только объекты класса Smartphone"
+    ):
         smartphone + lawn_grass
 
 
 def test_smartphone_add_product(smartphone, product):
     """Проверка ошибки при сложении Smartphone с Product"""
-    with pytest.raises(TypeError, match="Можно складывать только объекты класса Smartphone"):
+    with pytest.raises(
+        TypeError, match="Можно складывать только объекты класса Smartphone"
+    ):
         smartphone + product
 
 
 def test_smartphone_add_invalid_type(smartphone):
     """Проверка ошибки при сложении Smartphone с некорректным типом"""
-    with pytest.raises(TypeError, match="Можно складывать только объекты класса Smartphone"):
+    with pytest.raises(
+        TypeError, match="Можно складывать только объекты класса Smartphone"
+    ):
         smartphone + "not a product"
 
 
@@ -327,8 +334,10 @@ def test_lawn_grass_new_product(lawn_grass_info):
 
 def test_lawn_grass_str(lawn_grass):
     """Проверка метода __str__ для LawnGrass"""
-    expected = (f"{lawn_grass.name} ({lawn_grass.country}, {lawn_grass.color}), {lawn_grass.price} руб. "
-                f"Остаток: {lawn_grass.quantity} шт., Срок прорастания: {lawn_grass.germination_period}")
+    expected = (
+        f"{lawn_grass.name} ({lawn_grass.country}, {lawn_grass.color}), {lawn_grass.price} руб. "
+        f"Остаток: {lawn_grass.quantity} шт., Срок прорастания: {lawn_grass.germination_period}"
+    )
     assert str(lawn_grass) == expected
 
 
@@ -340,17 +349,23 @@ def test_lawn_grass_add_same_class(lawn_grass, lawn_grass2):
 
 def test_lawn_grass_add_smartphone(lawn_grass, smartphone):
     """Проверка ошибки при сложении LawnGrass с Smartphone"""
-    with pytest.raises(TypeError, match="Можно складывать только объекты класса LawnGrass"):
+    with pytest.raises(
+        TypeError, match="Можно складывать только объекты класса LawnGrass"
+    ):
         lawn_grass + smartphone
 
 
 def test_lawn_grass_add_product(lawn_grass, product):
     """Проверка ошибки при сложении LawnGrass с Product"""
-    with pytest.raises(TypeError, match="Можно складывать только объекты класса LawnGrass"):
+    with pytest.raises(
+        TypeError, match="Можно складывать только объекты класса LawnGrass"
+    ):
         lawn_grass + product
 
 
 def test_lawn_grass_add_invalid_type(lawn_grass):
     """Проверка ошибки при сложении LawnGrass с некорректным типом"""
-    with pytest.raises(TypeError, match="Можно складывать только объекты класса LawnGrass"):
+    with pytest.raises(
+        TypeError, match="Можно складывать только объекты класса LawnGrass"
+    ):
         lawn_grass + "not a product"

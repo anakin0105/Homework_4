@@ -1,4 +1,4 @@
-from src.product import Product
+
 
 
 class Category:
@@ -16,13 +16,13 @@ class Category:
 
     def __str__(self):
         total_products_count = sum([p.price for p in self.__products])
-        return f'{self.name}, количество продуктов: {total_products_count} шт.'
+        return f"{self.name}, количество продуктов: {total_products_count} шт."
 
     @property
     def products(self) -> str:
-        result = ''
+        result = ""
         for product in self.__products:
-            result += f'{product}\n'
+            result += f"{product}\n"
 
         return result
 
@@ -44,5 +44,3 @@ class CategoryIterator:
             self.index += 1
             return product
         raise StopIteration
-
-
