@@ -363,7 +363,7 @@ def test_lawn_grass_add_product(lawn_grass, product):
         lawn_grass + product
 
 
-def test_lawn_grass_add_invalid_type(lawn_grass):
+def test_lawn_grass_add_invalid_types(lawn_grass):
     """Проверка ошибки при сложении LawnGrass с некорректным типом"""
     with pytest.raises(
         TypeError, match="Можно складывать только объекты класса LawnGrass"
