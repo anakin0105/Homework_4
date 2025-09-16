@@ -47,7 +47,104 @@ class Product:  #
         return self.__price * self.quantity + other.price * other.quantity
 
 
+class Smartphone(Product):
+    """Класс Smartphone, наследник Product, с дополнительными атрибутами: производительность, модель, объем памяти, цвет"""
 
+    def __init__(self, name: str, description: str, quantity: int, price: float,
+                 efficiency: float, model: str, memory: int, color: str):
+        super().__init__(name, description, quantity, price)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+    @classmethod
+    def new_product(cls, product_info):
+        return cls(
+            name=product_info["name"],
+            description=product_info["description"],
+            price=product_info["price"],
+            quantity=product_info["quantity"],
+            efficiency=product_info["efficiency"],
+            model=product_info["model"],
+            memory=product_info["memory"],
+            color=product_info["color"],
+        )
+
+    def __str__(self):
+        return (f"{self.name} ({self.model}, {self.color}), {self.price} руб. "
+                f"Остаток: {self.quantity} шт., Память: {self.memory} ГБ, Производительность: {self.efficiency}")
+
+    def __add__(self, other):
+        if not isinstance(other, Smartphone):
+            raise TypeError("Можно складывать только объекты класса Smartphone")
+        return self.price * self.quantity + other.price * other.quantity
+
+
+class LawnGrass(Product):
+    """Класс LawnGrass, наследник Product, с дополнительными атрибутами: страна-производитель, срок прорастания, цвет"""
+
+    def __init__(self, name: str, description: str, quantity: int, price: float,
+                 country: str, germination_period: str, color: str):
+        super().__init__(name, description, quantity, price)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
+
+    @classmethod
+    def new_product(cls, product_info):
+        return cls(
+            name=product_info["name"],
+            description=product_info["description"],
+            price=product_info["price"],
+            quantity=product_info["quantity"],
+            country=product_info["country"],
+            germination_period=product_info["germination_period"],
+            color=product_info["color"],
+        )
+
+    def __str__(self):
+        return (f"{self.name} ({self.country}, {self.color}), {self.price} руб. "
+                f"Остаток: {self.quantity} шт., Срок прорастания: {self.germination_period}")
+
+
+    def __add__(self, other):
+        if not isinstance(other, LawnGrass):
+            raise TypeError("Можно складывать только объекты класса LawnGrass")
+        return self.price * self.quantity + other.price * other.quantity
+
+# # Пример использования:
+# if __name__ == "__main__":
+#     # Создаем смартфон
+#     smartphone_info = {
+#         "name": "iPhone 14",
+#         "description": "Смартфон Apple",
+#         "price": 79990.0,
+#         "quantity": 10,
+#         "efficiency": 3.5,
+#         "model": "A2882",
+#         "memory": 128,
+#         "color": "Midnight Black"
+#     }
+#     smartphone = Smartphone.new_product(smartphone_info)
+#     print(smartphone)
+#
+#     # Создаем газонную траву
+#     lawn_grass_info = {
+#         "name": "Green Lawn",
+#         "description": "Газонная трава для сада",
+#         "price": 1500.0,
+#         "quantity": 50,
+#         "country": "Germany",
+#         "germination_period": "7-14 дней",
+#         "color": "Green"
+#     }
+#     lawn_grass = LawnGrass.new_product(lawn_grass_info)
+#     print(lawn_grass)
+#
+#     # Проверяем сумму
+#     total = smartphone + lawn_grass
+#     print(f"Общая стоимость: {total} руб.")
 # # Примеры использования класса Product
 #
 # # 1. Создание продукта через init
