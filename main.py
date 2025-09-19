@@ -1,6 +1,4 @@
 from src.product import Product
-from src.utils import (  # Импортируем функцию read_json_file из utils
-    PATH_TO_FILE, read_json_file)
 from src.category import Category  # Импортируем класс Category
 
 if __name__ == '__main__':
