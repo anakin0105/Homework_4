@@ -1,10 +1,8 @@
-from unittest.mock import patch
 
-import pytest
-
-from src.product import LawnGrass, Product, Smartphone
 from src.category import Category
-
+import pytest
+from unittest.mock import patch
+from src.product import BaseProduct, Product, Smartphone, LawnGrass, PrintInitMixin
 # Фикстуры для создания тестовых данных
 
 
@@ -369,3 +367,14 @@ def test_lawn_grass_add_invalid_types(lawn_grass):
         TypeError, match="Можно складывать только объекты класса LawnGrass"
     ):
         lawn_grass + "not a product"
+def test_base_product_abstract():
+    """Проверка, что BaseProduct является абстрактным и нельзя создать его экземпляр."""
+    with pytest.raises(TypeError, match="Can't instantiate abstract class BaseProduct"):
+        BaseProduct("Test", "Test description", 10, 1000.0)
+
+def test_print_init_mixin_product(capsys):
+    """Проверка работы миксина для Product."""
+    product = Product("Phone", "Smartphone", 10, 50000.0)
+    captured = capsys.readouterr()
+    assert "Создан объект класса Product с параметрами: ('Phone', 'Smartphone', 10, 50000.0), {}" in captured.out
+

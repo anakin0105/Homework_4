@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 class PrintInitMixin:
     def __init__(self, *args, **kwargs):
-        print(f"Создан объект класса {self.__class__.__name__} с параметрами: {args}, {kwargs}")
+        print(f"Создан объект класса {self.__class__.__name__} с параметрами: {repr(args)}, {kwargs}")
         super().__init__(*args, **kwargs)
 
 
