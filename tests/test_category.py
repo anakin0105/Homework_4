@@ -1,6 +1,6 @@
 import pytest
 
-from src.сategory import Category, CategoryIterator
+from src.category import Category, CategoryIterator
 
 
 @pytest.fixture

@@ -1,5 +1,19 @@
+from abc import ABC, abstractmethod
 
-class Category:
+
+class BaseEntity(ABC):
+    """Абстрактный базовый класс для Category и Order."""
+
+    @abstractmethod
+    def __init__(self, name: str, description: str):
+        self.name = name
+        self.description = description
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+class Category(BaseEntity):
     """
     Класс для категорий товара
     """
@@ -8,9 +22,12 @@ class Category:
     product_count = 0
 
     def __init__(self, name: str, description: str, products: list = None) -> None:
+        super().__init__(name, description)
         self.name = name
         self.description = description
-        self.__products = products
+        self.__products = products if products is not None else []
+        Category.category_count += 1
+        Category.product_count += len(self.__products)
 
     def __str__(self):
         total_products_count = sum([p.price for p in self.__products])
@@ -21,7 +38,6 @@ class Category:
         result = ""
         for product in self.__products:
             result += f"{product}\n"
-
         return result
 
     def products_list(self):

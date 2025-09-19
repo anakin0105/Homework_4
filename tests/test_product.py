@@ -3,7 +3,7 @@ from unittest.mock import patch
 import pytest
 
 from src.product import LawnGrass, Product, Smartphone
-from src.сategory import Category
+from src.category import Category
 
 # Фикстуры для создания тестовых данных
 
