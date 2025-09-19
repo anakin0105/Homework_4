@@ -1,10 +1,10 @@
-
 from src.category import Category
 import pytest
 from unittest.mock import patch
 from src.product import BaseProduct, Product, Smartphone, LawnGrass
 
 # Фикстуры для создания тестовых данных
+
 
 @pytest.fixture
 def product_phone():
@@ -367,8 +367,9 @@ def test_lawn_grass_add_invalid_types(lawn_grass):
         TypeError, match="Можно складывать только объекты класса LawnGrass"
     ):
         lawn_grass + "not a product"
+
+
 def test_base_product_abstract():
     """Проверка, что BaseProduct является абстрактным и нельзя создать его экземпляр."""
     with pytest.raises(TypeError, match="Can't instantiate abstract class BaseProduct"):
         BaseProduct("Test", "Test description", 10, 1000.0)
-

@@ -13,6 +13,7 @@ class BaseEntity(ABC):
     def __str__(self):
         pass
 
+
 class Category(BaseEntity):
     """
     Класс для категорий товара
