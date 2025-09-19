@@ -1,7 +1,41 @@
+from abc import ABC, abstractmethod
 
 
+class BaseProduct(ABC):
+    """Абстрактный базовый класс для продуктов."""
 
-class Product:  #
+    @abstractmethod
+    def __init__(self, name: str, description: str, quantity: int, price: float):
+        self.name = name
+        self.description = description
+        self.quantity = quantity
+        self._price = price
+
+    @classmethod
+    @abstractmethod
+    def new_product(cls, product_info):
+        pass
+
+    @property
+    @abstractmethod
+    def price(self):
+        pass
+
+    @price.setter
+    @abstractmethod
+    def price(self, new_price):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
+
+    @abstractmethod
+    def __add__(self, other):
+        pass
+
+
+class Product(BaseProduct):  #
     """Класс Product с атрибутом: название, описание, цена, количество"""
 
     name: str  # атрибут: название
