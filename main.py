@@ -1,115 +1,160 @@
 from src.product import Product
-from src.utils import (  # Импортируем функцию read_json_file из utils
-    PATH_TO_FILE, read_json_file)
-from src.сategory import Category  # Импортируем класс Category
-
-
-def main() -> list:
-    """
-    Читает данные из JSON-файла с помощью read_json_file и создаёт объекты Category и Product.
-
-    Returns:
-        list: Список объектов Category с товарами.
-    """
-    # Читаем данные из JSON
-    data = read_json_file(PATH_TO_FILE)
-    print(f"Данные из JSON: {data}")
-    print(read_json_file(PATH_TO_FILE))
-
-    categories_main = []
-    for category_data in data:
-        try:
-            # Создаём список объектов Product
-            products = [
-                Product(
-                    name=prod["name"],
-                    description=["description"],
-                    price=prod["price"],
-                    quantity=prod["quantity"],
-                )
-                for prod in category_data["products"]
-            ]
-            # Создаём объект Category
-            category_main = Category(
-                name=category_data["name"],
-                description=category_data["description"],
-                products=products,
-            )
-            categories_main.append(category_main)
-        except KeyError as e:
-            print(f"Ошибка: В JSON отсутствует ключ {e}")
-            continue
-
-    return categories_main
-
+from src.category import Category  # Импортируем класс Category
 
 if __name__ == "__main__":
-    # Вызываем main и выводим результат для проверки
-    categories = main()
-    for category in categories:
-        print(f"Категория: {category.name}, Описание: {category.description}")
-        print("Товары:")
-        for product in category.products:
-            print(
-                f"  - {product.name}: Цена = {product.price}, Количество = {product.quantity}"
-            )
-        print()
-    # Код проверки для демонстрации дополнительного задания 3
-    # 1. Создаём продукты для тестирования
     product1 = Product(
-        name="Phone", description="Smartphone", price=50000.0, quantity=10
-    )  # Первый продукт
-    product2 = Product(
-        name="Laptop", description="Portable computer", price=80000.0, quantity=5
-    )  # Уникальный продукт
-    product3 = Product(
-        name="Phone", description="Updated smartphone", price=60000.0, quantity=3
-    )  # Дубликат Phone с более высокой ценой
-    product4 = Product(
-        name="Phone", description="Budget smartphone", price=40000.0, quantity=7
-    )  # Дубликат Phone с более низкой ценой
-    product5 = Product(
-        name="Tablet", description="Touchscreen device", price=30000.0, quantity=8
-    )  # Уникальный продукт
-    # 2. Создаём категорию с начальными продуктами
-    category = Category(
-        name="Electronics",
-        description="Devices and gadgets",
-        products=[product1, product2],  # Начинаем с Phone и Laptop
+        "Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5
     )
-    print("Начальное состояние категории:")  # Показываем начальное состояние
-    print(f"Категория: {category.name}, Описание: {category.description}")
-    print("Продукты:")
-    print(
-        category.products
-    )  # Ожидается: Phone (50000.0, 10 шт.), Laptop (80000.0, 5 шт.)
-    print(f"Всего категорий: {Category.category_count}")  # Ожидается: 1
-    print(f"Всего продуктов: {Category.product_count}")  # Ожидается: 2
+    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+    product3 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
 
-    # 3. Добавляем уникальный продукт (Tablet)
-    category.add_product(product5)
-    print("\nПосле добавления Tablet (уникальный продукт):")
-    print(category.products)  # Ожидается: Phone, Laptop, Tablet
-    print(f"Всего продуктов: {Category.product_count}")  # Ожидается: 3
+    print(product1.name)
+    print(product1.description)
+    print(product1.price)
+    print(product1.quantity)
 
-    # 4. Добавляем дубликат Phone с более высокой ценой (60000.0)
-    category.add_product(product3)
-    print("\nПосле добавления дубликата Phone (цена 60000.0):")
-    print(category.products)  # Ожидается: Phone (60000.0, 13 шт.), Laptop, Tablet
-    print(
-        f"Всего продуктов: {Category.product_count}"
-    )  # Ожидается: 3 (дубликат не увеличивает счётчик)
+    print(product2.name)
+    print(product2.description)
+    print(product2.price)
+    print(product2.quantity)
 
-    # 5. Добавляем дубликат Phone с более низкой ценой (40000.0, требует подтверждения)
-    print("\nДобавление дубликата Phone с более низкой ценой (40000.0):")
-    category.add_product(product4)  # Запросит подтверждение, так как цена понижается
-    print(
-        category.products
-    )  # Если ввести 'y': Phone (40000.0, 20 шт.), если 'n': Phone (60000.0, 20 шт.)
-    print(f"Всего продуктов: {Category.product_count}")  # Ожидается: 3
+    print(product3.name)
+    print(product3.description)
+    print(product3.price)
+    print(product3.quantity)
 
-    # 6. Проверяем сеттер цены напрямую для демонстрации
-    print("\nПроверка изменения цены Phone напрямую:")
-    product1.price = 70000.0  # Повышение цены, подтверждение не требуется
-    print(f"Новая цена Phone: {product1.price}")  # Ожидается: 70000.0
-    print(category.products)  # Ожидается: Phone (70000.0, 20 шт.), Laptop, Tablet
+    category1 = Category(
+        "Смартфоны",
+        "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
+        [product1, product2, product3],
+    )
+
+    print(category1.name == "Смартфоны")
+    print(category1.description)
+    print(len(category1.products))
+    print(category1.category_count)
+    print(category1.product_count)
+
+    product4 = Product('55" QLED 4K', "Фоновая подсветка", 123000.0, 7)
+    category2 = Category(
+        "Телевизоры",
+        "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником",
+        [product4],
+    )
+
+    print(category2.name)
+    print(category2.description)
+    print(len(category2.products))
+    print(category2.products)
+
+    print(Category.category_count)
+    print(Category.product_count)
+# def main() -> list:
+#     """
+#     Читает данные из JSON-файла с помощью read_json_file и создаёт объекты Category и Product.
+#
+#     Returns:
+#         list: Список объектов Category с товарами.
+#     """
+#     # Читаем данные из JSON
+#     data = read_json_file(PATH_TO_FILE)
+#     print(f"Данные из JSON: {data}")
+#     print(read_json_file(PATH_TO_FILE))
+#
+#     categories_main = []
+#     for category_data in data:
+#         try:
+#             # Создаём список объектов Product
+#             products = [
+#                 Product(
+#                     name=prod["name"],
+#                     description=["description"],
+#                     price=prod["price"],
+#                     quantity=prod["quantity"],
+#                 )
+#                 for prod in category_data["products"]
+#             ]
+#             # Создаём объект Category
+#             category_main = Category(
+#                 name=category_data["name"],
+#                 description=category_data["description"],
+#                 products=products,
+#             )
+#             categories_main.append(category_main)
+#         except KeyError as e:
+#             print(f"Ошибка: В JSON отсутствует ключ {e}")
+#             continue
+#
+#     return categories_main
+#
+#
+# if __name__ == "__main__":
+#     # Вызываем main и выводим результат для проверки
+#     categories = main()
+#     for category in categories:
+#         print(f"Категория: {category.name}, Описание: {category.description}")
+#         print("Товары:")
+#         for product in category.products:
+#             print(
+#                 f"  - {product.name}: Цена = {product.price}, Количество = {product.quantity}"
+#             )
+#         print()
+#     # Код проверки для демонстрации дополнительного задания 3
+#     # 1. Создаём продукты для тестирования
+#     product1 = Product(
+#         name="Phone", description="Smartphone", price=50000.0, quantity=10
+#     )  # Первый продукт
+#     product2 = Product(
+#         name="Laptop", description="Portable computer", price=80000.0, quantity=5
+#     )  # Уникальный продукт
+#     product3 = Product(
+#         name="Phone", description="Updated smartphone", price=60000.0, quantity=3
+#     )  # Дубликат Phone с более высокой ценой
+#     product4 = Product(
+#         name="Phone", description="Budget smartphone", price=40000.0, quantity=7
+#     )  # Дубликат Phone с более низкой ценой
+#     product5 = Product(
+#         name="Tablet", description="Touchscreen device", price=30000.0, quantity=8
+#     )  # Уникальный продукт
+#     # 2. Создаём категорию с начальными продуктами
+#     category = Category(
+#         name="Electronics",
+#         description="Devices and gadgets",
+#         products=[product1, product2],  # Начинаем с Phone и Laptop
+#     )
+#     print("Начальное состояние категории:")  # Показываем начальное состояние
+#     print(f"Категория: {category.name}, Описание: {category.description}")
+#     print("Продукты:")
+#     print(
+#         category.products
+#     )  # Ожидается: Phone (50000.0, 10 шт.), Laptop (80000.0, 5 шт.)
+#     print(f"Всего категорий: {Category.category_count}")  # Ожидается: 1
+#     print(f"Всего продуктов: {Category.product_count}")  # Ожидается: 2
+#
+#     # 3. Добавляем уникальный продукт (Tablet)
+#     category.add_product(product5)
+#     print("\nПосле добавления Tablet (уникальный продукт):")
+#     print(category.products)  # Ожидается: Phone, Laptop, Tablet
+#     print(f"Всего продуктов: {Category.product_count}")  # Ожидается: 3
+#
+#     # 4. Добавляем дубликат Phone с более высокой ценой (60000.0)
+#     category.add_product(product3)
+#     print("\nПосле добавления дубликата Phone (цена 60000.0):")
+#     print(category.products)  # Ожидается: Phone (60000.0, 13 шт.), Laptop, Tablet
+#     print(
+#         f"Всего продуктов: {Category.product_count}"
+#     )  # Ожидается: 3 (дубликат не увеличивает счётчик)
+#
+#     # 5. Добавляем дубликат Phone с более низкой ценой (40000.0, требует подтверждения)
+#     print("\nДобавление дубликата Phone с более низкой ценой (40000.0):")
+#     category.add_product(product4)  # Запросит подтверждение, так как цена понижается
+#     print(
+#         category.products
+#     )  # Если ввести 'y': Phone (40000.0, 20 шт.), если 'n': Phone (60000.0, 20 шт.)
+#     print(f"Всего продуктов: {Category.product_count}")  # Ожидается: 3
+#
+#     # 6. Проверяем сеттер цены напрямую для демонстрации
+#     print("\nПроверка изменения цены Phone напрямую:")
+#     product1.price = 70000.0  # Повышение цены, подтверждение не требуется
+#     print(f"Новая цена Phone: {product1.price}")  # Ожидается: 70000.0
+#     print(category.products)  # Ожидается: Phone (70000.0, 20 шт.), Laptop, Tablet
