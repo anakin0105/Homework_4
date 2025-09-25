@@ -1,9 +1,7 @@
 import pytest
 
-from src.category import Category
-from src.exceptions import ZeroQuantityError
-from src.product import Product
 from src.order import Order
+from src.product import Product
 
 
 @pytest.fixture
@@ -40,4 +38,3 @@ def test_order_invalid_product():
         match="Товар должен быть экземпляром класса, наследующего BaseProduct",
     ):
         Order("Order1", "Тестовый заказ", "not a product", 2)
-

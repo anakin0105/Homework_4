@@ -16,7 +16,9 @@ class Order(BaseEntity):
                     "Товар должен быть экземпляром класса, наследующего BaseProduct"
                 )
             if quantity <= 0:
-                raise ZeroQuantityError("Товар с нулевым количеством не может быть добавлен")
+                raise ZeroQuantityError(
+                    "Товар с нулевым количеством не может быть добавлен"
+                )
             self.product = product
             self.quantity = quantity
             self.total_price = product.price * quantity

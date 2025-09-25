@@ -1,38 +1,61 @@
-from src.product import Product, Smartphone
 from src.category import Category  # Импортируем класс Category
+from src.product import Product, Smartphone
 from src.utils import read_json_file
 
-
-def main():
-    data = read_json_file("data/products.json")
-    for category_data in data:
-        products = []
-        for p in category_data["products"]:
-            if "efficiency" in p:  # Проверка на смартфон
-                product = Smartphone.new_product(p)
-            else:
-                product = Product.new_product(p)
-            products.append(product)
-        category = Category(category_data["name"], category_data["description"], products)
-        print(f"Категория: {category.name}, Средняя цена: {category.average_price()}")
-        # Тестируем добавление товара
-        try:
-            invalid_product = Product("Invalid", "Test", 0, 100.0)
-            category.add_product(invalid_product)
-        except ValueError:
-            pass  # Ошибка обрабатывается в add_product
-        category.add_product(Product("Test Product", "Description", 10, 200.0))
-
-
 if __name__ == "__main__":
-    main()
+    try:
+        product_invalid = Product("Бракованный товар", "Неверное количество", 0, 1000.0)
+    except ValueError as e:
+        print(
+            "Возникла ошибка ValueError прерывающая работу программы при попытке добавить продукт с нулевым количеством"
+        )
+    else:
+        print(
+            "Не возникла ошибка ValueError при попытке добавить продукт с нулевым количеством"
+        )
 
+    product1 = Product(
+        "Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5
+    )
+    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+    product3 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
 
+    category1 = Category(
+        "Смартфоны", "Категория смартфонов", [product1, product2, product3]
+    )
 
+    print(
+        f"Средняя цена в категории '{category1.name}': {category1.average_price()} руб."
+    )
 
+    category_empty = Category("Пустая категория", "Категория без продуктов", [])
+    print(
+        f"Средняя цена в категории '{category_empty.name}': {category_empty.average_price()} руб."
+    )
 
-
-
+# def main():
+#     data = read_json_file("data/products.json")
+#     for category_data in data:
+#         products = []
+#         for p in category_data["products"]:
+#             if "efficiency" in p:  # Проверка на смартфон
+#                 product = Smartphone.new_product(p)
+#             else:
+#                 product = Product.new_product(p)
+#             products.append(product)
+#         category = Category(category_data["name"], category_data["description"], products)
+#         print(f"Категория: {category.name}, Средняя цена: {category.average_price()}")
+#         # Тестируем добавление товара
+#         try:
+#             invalid_product = Product("Invalid", "Test", 0, 100.0)
+#             category.add_product(invalid_product)
+#         except ValueError:
+#             pass  # Ошибка обрабатывается в add_product
+#         category.add_product(Product("Test Product", "Description", 10, 200.0))
+#
+#
+# if __name__ == "__main__":
+#     main()
 
 
 # if __name__ == "__main__":

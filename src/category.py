@@ -47,7 +47,9 @@ class Category(BaseEntity):
         """Добавление товара в категорию с обработкой исключений."""
         try:
             if product.quantity <= 0:
-                raise ZeroQuantityError("Товар с нулевым количеством не может быть добавлен")
+                raise ZeroQuantityError(
+                    "Товар с нулевым количеством не может быть добавлен"
+                )
             self.__products.append(product)
             print(f"Товар {product.name} добавлен")
         except ZeroQuantityError as e:
