@@ -52,6 +52,7 @@ class Category(BaseEntity):
             print(f"Товар {product.name} добавлен")
         except ZeroQuantityError as e:
             print(f"Ошибка: {e}")
+            raise
         finally:
             print("Обработка добавления товара завершена")
 
