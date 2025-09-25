@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from src.exceptions import ZeroQuantityError
+
 
 class BaseEntity(ABC):
     """Абстрактный базовый класс для Category и Order."""
@@ -33,6 +35,28 @@ class Category(BaseEntity):
     def __str__(self):
         total_products_count = sum([p.price for p in self.__products])
         return f"{self.name}, количество продуктов: {total_products_count} шт."
+
+    def average_price(self) -> float:
+        try:
+            total_price = sum(product.price for product in self.__products)
+            return total_price / len(self.__products)
+        except ZeroDivisionError:
+            return 0
+
+    def add_product(self, product):
+        """Добавление товара в категорию с обработкой исключений."""
+        try:
+            if product.quantity <= 0:
+                raise ZeroQuantityError(
+                    "Товар с нулевым количеством не может быть добавлен"
+                )
+            self.__products.append(product)
+            print(f"Товар {product.name} добавлен")
+        except ZeroQuantityError as e:
+            print(f"Ошибка: {e}")
+            raise
+        finally:
+            print("Обработка добавления товара завершена")
 
     @property
     def products(self) -> str:

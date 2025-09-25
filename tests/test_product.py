@@ -1,7 +1,9 @@
-from src.category import Category
-import pytest
 from unittest.mock import patch
-from src.product import BaseProduct, Product, Smartphone, LawnGrass
+
+import pytest
+
+from src.category import Category
+from src.product import BaseProduct, LawnGrass, Product, Smartphone
 
 # Фикстуры для создания тестовых данных
 

@@ -1,6 +1,7 @@
 import pytest
-from src.product import Product
+
 from src.order import Order
+from src.product import Product
 
 
 @pytest.fixture
